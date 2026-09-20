@@ -14,7 +14,8 @@ Jeu de révision des 32 figures de style du cours.
 - Maîtrise : trois journées de réussite sans indice par figure. Aucune pénalité pour une journée manquée.
 - Records de réussite, combo et contrôle blanc.
 - Défi hebdomadaire commun, une note par compte. Classement facultatif par pseudo, sans bonus de vitesse. Un score partagé peut être retiré.
-- Couleurs claires ou sombres selon l’appareil, animations réduites selon les préférences système, son désactivé par défaut.
+- Surfaces neutres claires ou sombres selon l’appareil, accents violets et police système. Animations de réponse, combos et transitions ; réduction selon les préférences système. Audio réutilisé et réactivé après suspension, son désactivé par défaut.
+- Classement du total XP des comptes, visible uniquement aux joueurs connectés. Les ex æquo partagent leur rang ; ta position reste affichée même hors du top 100.
 
 Les manches terminées sont sauvegardées. Quitter une manche incomplète ne rapporte pas de récompense. Une bonne réponse rapporte 10 XP, ou 5 avec indice, jusqu’à deux réponses récompensées par figure et jour UTC. Un combo de cinq rapporte 5 XP ; un boss parfait, 10 ; une erreur corrigée en revanche, 5 supplémentaires. Ces bonus dépendent également des réponses encore récompensables. Les anciens points restent acquis.
 
@@ -28,12 +29,13 @@ Exécuter dans Supabase SQL Editor, dans cet ordre et une seule fois :
 
 1. `supabase/migrations/001_progress.sql`
 2. `supabase/migrations/002_gameplay.sql`
+3. `supabase/migrations/003_xp_leaderboard.sql`
 
 Site URL et Redirect URL : `https://kriskarachorov.github.io/figures-en-jeu/`.
 
 `accounts.js` contient uniquement l’URL et la clé publique Supabase. Ne jamais ajouter de clé secrète. Le SDK officiel fourni dans `vendor/` possède sa licence. La configuration e-mail existante est conservée.
 
-Les tentatives personnelles sont privées. Seuls le pseudo et le score hebdomadaire deviennent visibles lorsque leur propriétaire le choisit. Les réponses du défi sont notées côté serveur, avec une seule validation par compte et semaine. Ce jeu scolaire n’est pas un système anti-triche : le contenu pédagogique est public.
+Les tentatives personnelles et les e-mails sont privés. Le pseudo et le total XP des comptes sont visibles dans le classement réservé aux joueurs connectés. Le partage du score dans le classement du défi hebdomadaire reste facultatif. Les réponses du défi sont notées côté serveur, avec une seule validation par compte et semaine. Ce jeu scolaire n’est pas un système anti-triche : le contenu pédagogique est public.
 
 ## Vérification
 
