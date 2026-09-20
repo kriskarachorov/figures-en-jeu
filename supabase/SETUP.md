@@ -1,9 +1,9 @@
 # Supabase setup
 
-Status: schema applied by the project owner. Database security and scoring tested locally in PGlite; anonymous API access denied on the hosted project. Site and redirect URLs configured by the owner. Custom SMTP and a real email sign-up/recovery test remain outstanding.
+Status: migrations 001 and 002 applied by the project owner. Database security and scoring tested locally in PGlite; anonymous API access to get_game_state denied on the hosted project. Site and redirect URLs configured by the owner. Existing email delivery settings are unchanged; real email signup and recovery were not retested in this update.
 
 1. Create a Supabase project named `figures-en-jeu`. Choose a Free organization and a European region. Set the database password yourself; do not commit or share it.
-2. In SQL Editor, run `migrations/001_progress.sql` once in that new project.
+2. In SQL Editor, run `migrations/001_progress.sql`, then `migrations/002_gameplay.sql`, once each. The second migration preserves existing progress and adds rounds, quests and the weekly challenge.
 3. In Authentication → URL Configuration, set the Site URL to `https://kriskarachorov.github.io/figures-en-jeu/` and add that same exact URL to Redirect URLs.
 4. Obtain the Project URL and publishable key from the project's Connect dialog / API settings. Only those public values belong in the website. Never put a secret or service-role key in this public repository.
 5. Connect the frontend to Supabase Auth and the `record_figure_answer` and `get_figure_progress` functions. Test with two distinct accounts before publishing: each should read only its own attempts; direct inserts and updates must be denied; a repeated attempt UUID must not award points twice.

@@ -1,31 +1,48 @@
 # Figures en jeu
 
-Jeu de révision en français : 32 figures de style, entraînement, contrôle blanc et fiches mémo.
+Jeu de révision des 32 figures de style du cours.
 
-Jouer : https://kriskarachorov.github.io/figures-en-jeu/
+[Jouer](https://kriskarachorov.github.io/figures-en-jeu/)
 
-## Comptes et progression
+## Jouer et progresser
 
-Les comptes e-mail et mot de passe utilisent Supabase Auth. Les comptes connectés enregistrent leurs réponses et retrouvent leurs points et leur progression sur plusieurs appareils. Le jeu reste accessible sans compte, sans sauvegarde des réponses invitées.
+- Entraînement expliqué, fiches mémo et contrôle blanc sur 20.
+- Quête quotidienne de cinq figures différentes sans indice (+25 XP), renouvelée à minuit UTC.
+- Combos, six badges, niveaux de 200 XP et titres de progression.
+- Combat de nuances : identifier une figure puis justifier son mécanisme.
+- Revanche : des exemples alternatifs pour les figures à revoir.
+- Maîtrise : trois journées de réussite sans indice par figure. Aucune pénalité pour une journée manquée.
+- Records de réussite, combo et contrôle blanc.
+- Défi hebdomadaire commun, une note par compte. Classement facultatif par pseudo, sans bonus de vitesse. Un score partagé peut être retiré.
+- Couleurs claires ou sombres selon l’appareil, animations réduites selon les préférences système, son désactivé par défaut.
 
-- Bonne réponse : 10 points ; avec indice : 5 ; erreur : 0.
-- Les résultats d’un contrôle sont envoyés à la fin. Quitter un contrôle incomplet ne rapporte pas de points.
-- Une réponse en attente conserve son identifiant lors d’une nouvelle tentative de sauvegarde, pour éviter de compter deux fois les points.
-- Les résultats sont privés grâce aux règles d’accès de la base. Il ne s’agit pas d’un classement compétitif protégé contre la triche.
-- Les réponses en attente et la session de connexion sont conservées sur l’appareil. Les mots de passe sont traités uniquement par Supabase Auth.
+Les manches terminées sont sauvegardées. Quitter une manche incomplète ne rapporte pas de récompense. Une bonne réponse rapporte 10 XP, ou 5 avec indice, jusqu’à deux réponses récompensées par figure et jour UTC. Un combo de cinq rapporte 5 XP ; un boss parfait, 10 ; une erreur corrigée en revanche, 5 supplémentaires. Ces bonus dépendent également des réponses encore récompensables. Les anciens points restent acquis.
+
+Sans compte, les récompenses restent uniquement en mémoire pendant la visite. Les manches d’un compte en attente de sauvegarde restent dans le stockage de cet appareil et sont réessayées à la reconnexion. Les tentatives de sauvegarde sont idempotentes et ne transfèrent pas les résultats entre comptes.
 
 ## Configuration
 
-Le schéma est dans `supabase/migrations/001_progress.sql`. La clé publique du projet peut être présente dans `accounts.js` ; aucune clé secrète ne doit être ajoutée au dépôt. Le client officiel Supabase JS 2.116.0 est fourni dans `vendor/`, avec sa licence.
+Site statique publié depuis la racine de `main` par GitHub Pages. Aucun processus de compilation nécessaire.
+
+Exécuter dans Supabase SQL Editor, dans cet ordre et une seule fois :
+
+1. `supabase/migrations/001_progress.sql`
+2. `supabase/migrations/002_gameplay.sql`
 
 Site URL et Redirect URL : `https://kriskarachorov.github.io/figures-en-jeu/`.
 
-Avant d’ouvrir les inscriptions à des amis, configurer un serveur SMTP dans Supabase Authentication. Le service e-mail par défaut est limité et ne convient pas aux inscriptions de personnes hors de l’équipe du projet. Voir https://supabase.com/docs/guides/auth/auth-smtp .
+`accounts.js` contient uniquement l’URL et la clé publique Supabase. Ne jamais ajouter de clé secrète. Le SDK officiel fourni dans `vendor/` possède sa licence. La configuration e-mail existante est conservée.
+
+Les tentatives personnelles sont privées. Seuls le pseudo et le score hebdomadaire deviennent visibles lorsque leur propriétaire le choisit. Les réponses du défi sont notées côté serveur, avec une seule validation par compte et semaine. Ce jeu scolaire n’est pas un système anti-triche : le contenu pédagogique est public.
 
 ## Vérification
 
-Le schéma a été testé dans PostgreSQL embarqué (PGlite) avec deux utilisateurs distincts : accès privé, interdiction des écritures directes, refus des visiteurs non connectés, points 10/5/0 et sauvegardes répétées. Des tests DOM avec un service simulé ont vérifié les erreurs de connexion, le mode invité, les reprises après interruption, le changement de compte et le contrôle blanc. Le refus de lecture anonyme a également été vérifié sur le projet Supabase. Les parcours e-mail réels attendent la configuration SMTP.
+`npm install`, puis `npm test` (Node récent).
 
-Le terme « paradiastole » est repris de la fiche de cours avec une précision dans le jeu : cet emploi est à confirmer avec le professeur.
+Les tests utilisent un vrai PostgreSQL embarqué (PGlite) pour les migrations, droits d’accès, limites de récompense, sauvegardes répétées et défis communs. Les tests DOM couvrent les manches, les boss à deux étapes, les badges, les 32 anneaux, les corrections différées, le mode invité, la reprise après interruption et l’isolation entre comptes avec un service simulé.
+
+Ces tests ne remplacent pas une vérification visuelle dans le navigateur ni un parcours e-mail réel.
+
+Le terme « paradiastole » conserve l’emploi de la fiche de cours, signalé dans le jeu comme étant à confirmer avec le professeur.
 
 made by kristian karachorov
