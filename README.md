@@ -23,6 +23,7 @@ Le score, le meilleur résultat et les figures à revoir sont conservés sur cet
 - Records de réussite, combo et contrôle blanc.
 - Défi hebdomadaire commun, une note par compte. Classement facultatif par pseudo, sans bonus de vitesse. Un score partagé peut être retiré.
 - Surfaces neutres claires ou sombres selon l’appareil, accents violets et police système. Animations de réponse, combos et transitions ; réduction selon les préférences système. Audio réutilisé et réactivé après suspension, son désactivé par défaut.
+- Notification de dépassement à la fin d’une manche ou d’un défi hebdomadaire, après sauvegarde des XP. Les égalités ne déclenchent pas de message.
 - Classement du total XP des comptes, visible uniquement aux joueurs connectés. Les ex æquo partagent leur rang ; ta position reste affichée même hors du top 100.
 
 Les manches terminées sont sauvegardées. Quitter une manche incomplète ne rapporte pas de récompense. Une bonne réponse rapporte 10 XP, ou 5 avec indice, jusqu’à deux réponses récompensées par figure et jour UTC. Un combo de cinq rapporte 5 XP ; un boss parfait, 10 ; une erreur corrigée en revanche, 5 supplémentaires. Ces bonus dépendent également des réponses encore récompensables. Les anciens points restent acquis.
@@ -38,6 +39,7 @@ Exécuter dans Supabase SQL Editor, dans cet ordre et une seule fois :
 1. `supabase/migrations/001_progress.sql`
 2. `supabase/migrations/002_gameplay.sql`
 3. `supabase/migrations/003_xp_leaderboard.sql`
+4. `supabase/migrations/004_rank_messages.sql`
 
 Site URL et Redirect URL : `https://kriskarachorov.github.io/figures-en-jeu/`.
 
