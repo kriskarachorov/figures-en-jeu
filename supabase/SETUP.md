@@ -1,6 +1,6 @@
 # Supabase setup
 
-Status: migrations 001, 002, 003, 004 and 005 applied by the project owner. Migration 006 is ready and locally tested; owner confirmation is pending before publishing the new daily timezone. Database security and scoring tested locally in PGlite; anonymous API access to get_game_state denied on the hosted project. Site and redirect URLs configured by the owner. Existing email delivery settings are unchanged; real email signup and recovery were not retested in this update.
+Status: migrations 001 through 006 applied successfully by the project owner. Daily quests and XP limits renew at midnight Europe/Sofia, including daylight saving changes. Database security and scoring tested locally in PGlite; anonymous API access to get_game_state denied on the hosted project. Site and redirect URLs configured by the owner. Existing email delivery settings are unchanged; real email signup and recovery were not retested in this update.
 
 1. Create a Supabase project named `figures-en-jeu`. Choose a Free organization and a European region. Set the database password yourself; do not commit or share it.
 2. In SQL Editor, run `migrations/001_progress.sql`, then `migrations/002_gameplay.sql` then `migrations/003_xp_leaderboard.sql` then `migrations/004_rank_messages.sql` then `migrations/005_thursday_learning.sql` and `migrations/006_daily_reset_and_content.sql`, once each. The second migration preserves existing progress and adds rounds, quests and the weekly challenge.
