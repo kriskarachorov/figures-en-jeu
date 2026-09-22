@@ -4,6 +4,14 @@ Jeu de révision des 32 figures de style du cours.
 
 [Jouer](https://kriskarachorov.github.io/figures-en-jeu/)
 
+## Contrôle du jeudi 24 septembre 2026
+
+L’onglet « Contrôle jeudi » remplace le contrôle blanc dans la navigation. Il reprend exclusivement les 24 figures des deux feuilles fournies : quiz de 24 questions mêlant définitions et exemples, corrections immédiates, indices, reprise des erreurs et fiches dédiées. Les réponses proposées appartiennent toutes à ces mêmes 24 figures.
+
+La tmésis est interrogée par sa définition ; ses exemples particuliers restent consultables dans les fiches. Des exemples plus explicites sont utilisés lorsque ceux de la feuille peuvent illustrer plusieurs procédés. Les photos elles-mêmes ne sont pas publiées.
+
+Le score, le meilleur résultat et les figures à revoir sont conservés sur cet appareil, séparément pour chaque compte (ou invité), sans modifier les XP ou le classement général. Les autres modes conservent leur programme d’origine.
+
 ## Jouer et progresser
 
 - Entraînement expliqué, fiches mémo et contrôle blanc sur 20.
