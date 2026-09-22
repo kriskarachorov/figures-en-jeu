@@ -10,7 +10,7 @@ L’onglet « Contrôle jeudi » remplace le contrôle blanc dans la navigation.
 
 La tmésis est interrogée par sa définition ; ses exemples particuliers restent consultables dans les fiches. Des exemples plus explicites sont utilisés lorsque ceux de la feuille peuvent illustrer plusieurs procédés. Les photos elles-mêmes ne sont pas publiées.
 
-Le score, le meilleur résultat et les figures à revoir sont conservés sur cet appareil, séparément pour chaque compte (ou invité), sans modifier les XP ou le classement général. Les autres modes conservent leur programme d’origine.
+Le score, le meilleur résultat et les figures à revoir sont conservés sur cet appareil, séparément pour chaque compte, sans modifier les XP ou le classement général. Les autres modes conservent leur programme d’origine.
 
 ## Jouer et progresser
 
@@ -27,7 +27,7 @@ Le score, le meilleur résultat et les figures à revoir sont conservés sur cet
 
 Les manches terminées sont sauvegardées. Quitter une manche incomplète ne rapporte pas de récompense. Une bonne réponse rapporte 10 XP, ou 5 avec indice, jusqu’à deux réponses récompensées par figure et jour UTC. Un combo de cinq rapporte 5 XP ; un boss parfait, 10 ; une erreur corrigée en revanche, 5 supplémentaires. Ces bonus dépendent également des réponses encore récompensables. Les anciens points restent acquis.
 
-Sans compte, les récompenses restent uniquement en mémoire pendant la visite. Les manches d’un compte en attente de sauvegarde restent dans le stockage de cet appareil et sont réessayées à la reconnexion. Les tentatives de sauvegarde sont idempotentes et ne transfèrent pas les résultats entre comptes.
+La connexion est obligatoire pour accéder aux quiz et aux fiches. La déconnexion verrouille le jeu et interrompt la manche en cours. Les anciennes manches invitées ne sont pas transférées vers un compte. Les manches terminées en attente de sauvegarde restent associées au compte d’origine sur cet appareil ; elles sont réessayées à la reconnexion, sans doublon de XP.
 
 ## Configuration
 
@@ -49,7 +49,7 @@ Les tentatives personnelles et les e-mails sont privés. Le pseudo et le total X
 
 `npm install`, puis `npm test` (Node récent).
 
-Les tests utilisent un vrai PostgreSQL embarqué (PGlite) pour les migrations, droits d’accès, limites de récompense, sauvegardes répétées et défis communs. Les tests DOM couvrent les manches, les boss à deux étapes, les badges, les 32 anneaux, les corrections différées, le mode invité, la reprise après interruption et l’isolation entre comptes avec un service simulé.
+Les tests utilisent un vrai PostgreSQL embarqué (PGlite) pour les migrations, droits d’accès, limites de récompense, sauvegardes répétées et défis communs. Les tests DOM couvrent les manches, les boss à deux étapes, les badges, les 32 anneaux, les corrections différées, le verrouillage sans connexion, la reprise après interruption et l’isolation entre comptes avec un service simulé.
 
 Ces tests ne remplacent pas une vérification visuelle dans le navigateur ni un parcours e-mail réel.
 
