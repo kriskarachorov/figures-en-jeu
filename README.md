@@ -32,7 +32,7 @@ Les photos ne sont pas publiées. Les exemples ambigus ont été clarifiés ; le
 - Défi hebdomadaire commun, une note par compte. Classement facultatif par pseudo, sans bonus de vitesse. Un score partagé peut être retiré.
 - Surfaces neutres claires ou sombres selon l’appareil, accents violets et police système. Animations de réponse, combos et transitions ; réduction selon les préférences système. Audio réutilisé et réactivé après suspension, son désactivé par défaut.
 - Notification de dépassement à la fin d’une manche ou d’un défi hebdomadaire, après sauvegarde des XP. Les égalités ne déclenchent pas de message.
-- Classement du total XP des comptes, visible uniquement aux joueurs connectés. Les ex æquo partagent leur rang ; ta position reste affichée même hors du top 100. Le classement se met à jour toutes les 30 secondes pendant sa consultation, au retour dans l’onglet et après une sauvegarde de points.
+- Classement du total XP des comptes, visible uniquement aux joueurs connectés. Les ex æquo ayant des XP partagent leur rang ; les comptes à 0 XP reçoivent des rangs distincts par ordre alphabétique du pseudo (sans distinction de majuscules). À pseudo identique, un ordre stable départage les comptes ; ta position reste affichée même hors du top 100. Le classement se met à jour toutes les 30 secondes pendant sa consultation, au retour dans l’onglet et après une sauvegarde de points.
 
 Les manches terminées sont sauvegardées. Quitter une manche incomplète ne rapporte pas de récompense. Une bonne réponse rapporte 10 XP, ou 5 avec indice, jusqu’à deux réponses récompensées par figure et jour (heure de Sofia). Un combo de cinq rapporte 5 XP ; un boss parfait, 10 ; une erreur corrigée en revanche, 5 supplémentaires. Ces bonus dépendent également des réponses encore récompensables. Les anciens points restent acquis.
 
@@ -50,6 +50,7 @@ Exécuter dans Supabase SQL Editor, dans cet ordre et une seule fois :
 4. `supabase/migrations/004_rank_messages.sql`
 5. `supabase/migrations/005_thursday_learning.sql`
 6. `supabase/migrations/006_daily_reset_and_content.sql`
+7. `supabase/migrations/007_zero_xp_ranks.sql`
 
 Site URL et Redirect URL : `https://kriskarachorov.github.io/figures-en-jeu/`.
 
