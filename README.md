@@ -6,12 +6,14 @@ Jeu de révision des 32 figures de style du cours.
 
 ## Contrôle du jeudi 24 septembre 2026
 
-Le mode reprend exclusivement les 24 figures des deux feuilles fournies. Il propose :
+Le mode reprend exclusivement les 24 figures des deux feuilles fournies. Il s’ouvre sur un **contrôle rédigé** : nom → définition et exemple personnel, ou exemple → nom et définition. Les formats sont tirés indépendamment, sans alternance imposée. Les réponses sont modifiables avant envoi, avec un brouillon par compte sur l’appareil. La correction OpenAI est déclenchée une fois à la remise de la copie, avec demi-points, remarques, note indicative sur 20 et XP validés côté serveur. [Activation et budget](supabase/WRITTEN_SETUP.md).
+
+Les outils complémentaires restent disponibles :
 
 - Quiz de 24 questions, avec 96 exemples (quatre par figure) et les 24 définitions.
 - « Comprendre » : identifier la figure, puis choisir son mécanisme ; les deux étapes doivent être justes.
 - Révision ciblée de 10 figures : priorité aux erreurs, réponses aidées et figures dues pour une nouvelle révision.
-- Examen de 24 questions, sans indice ni correction avant le bilan ; note sur 20 et son neutre après chaque réponse.
+- Contrôle rédigé de 24 questions, sans indice ni correction avant la remise de la copie.
 - Bilan « Mon niveau » sur les cinq dernières réponses par figure des sept derniers jours. Trois réussites sans indice sur deux questions différentes, dont une explication juste, et au moins 80 % de réussite donnent le statut « Solide ». Une figure revient le lendemain, ou après trois jours si elle est solide. Une erreur la remet immédiatement à revoir.
 
 Les nouvelles séries terminées sont sauvegardées sur le compte Supabase et retrouvées sur les autres appareils. Le serveur vérifie les identifiants des questions et les réponses, calcule les XP et empêche qu’une nouvelle tentative d’envoi double les points. Une réussite rapporte 10 XP, 5 avec indice ou 15 en mode Comprendre. La limite de deux réussites récompensées par figure et jour est commune aux modes généraux et à la révision de jeudi. Le classement et les notifications de dépassement utilisent ces mêmes XP.
@@ -51,6 +53,7 @@ Exécuter dans Supabase SQL Editor, dans cet ordre et une seule fois :
 5. `supabase/migrations/005_thursday_learning.sql`
 6. `supabase/migrations/006_daily_reset_and_content.sql`
 7. `supabase/migrations/007_zero_xp_ranks.sql`
+8. `supabase/migrations/008_written_exam.sql` (puis activer le correcteur suivant le guide ci-dessus)
 
 Site URL et Redirect URL : `https://kriskarachorov.github.io/figures-en-jeu/`.
 

@@ -1,0 +1,3 @@
+[functions.grade-written]
+# The function verifies every JWT using Supabase Auth before any grading call.
+verify_jwt = false

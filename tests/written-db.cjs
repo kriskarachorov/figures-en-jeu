@@ -1,0 +1,31 @@
+const {PGlite}=require('@electric-sql/pglite'),fs=require('fs'),assert=require('assert/strict'),{randomUUID}=require('crypto');
+(async()=>{
+ const db=new PGlite();await db.exec(`create role anon;create role authenticated;create role service_role;create schema auth;create table auth.users(id uuid primary key,raw_user_meta_data jsonb default '{}');create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;grant usage on schema auth to authenticated;`);
+ for(const f of fs.readdirSync(process.argv[2]).filter(f=>f.endsWith('.sql')).sort())await db.exec(fs.readFileSync(process.argv[2]+'/'+f,'utf8'));
+ // Keep this time-limited campaign test runnable after the control date without altering shipped SQL.
+ const fn=(await db.query("select pg_get_functiondef('public.claim_written_exam(uuid,uuid,jsonb,bigint)'::regprocedure) body")).rows[0].body;
+ await db.exec(fn.replace('2026-09-25 00:00:00 Europe/Sofia','2099-09-25 00:00:00 Europe/Sofia'));
+ const u=randomUUID(),v=randomUUID();await db.query('insert into auth.users(id) values($1),($2)',[u,v]);
+ const answers=Array.from({length:24},(_,figureId)=>({figureId,type:figureId%2?'name':'example',exampleIndex:0,name:'Figure',definition:'Une définition',example:'Un exemple'}));
+ const items=answers.map(q=>({figureId:q.figureId,definitionScore:1,answerScore:1,uncertain:false,feedback:'Explication.'}));
+ const call=async(name,args)=>(await db.query('select public.'+name+' r',args)).rows[0].r;
+ const claim=(id,user=u,a=answers)=>call('claim_written_exam($1,$2,$3,$4)',[user,id,JSON.stringify(a),100000]);
+ const finish=(id,token,i=items)=>call('finish_written_exam($1,$2,$3,$4)',[u,id,token,JSON.stringify(i)]);
+ await db.exec(`set role authenticated;set request.jwt.claim.sub='${u}'`);
+ await assert.rejects(()=>claim(randomUUID()));await assert.rejects(()=>finish(randomUUID(),randomUUID()));await assert.rejects(()=>db.query('select * from public.written_exams'));
+ await db.exec('reset role;set role service_role');const id=randomUUID(),r=await claim(id);assert.equal(r.status,'claimed');assert.equal((await claim(id)).status,'pending');
+ await assert.rejects(()=>claim(id,u,answers.map(q=>({...q,definition:'Changed'}))));await assert.rejects(()=>finish(id,randomUUID()));
+ const result=await finish(id,r.claim);assert.equal(result.score,20);assert.equal(result.earned,270);assert.deepEqual(await finish(id,r.claim),result);assert.equal((await claim(id)).status,'graded');
+ await db.exec(`reset role;set role authenticated;set request.jwt.claim.sub='${u}'`);assert.equal((await call('get_written_exam($1)',[id])).result.earned,270);assert.equal((await call('get_xp_leaderboard()',[])).me.xp,270);
+ await db.exec(`set request.jwt.claim.sub='${v}'`);assert.equal(await call('get_written_exam($1)',[id]),null);
+ await db.exec('reset role;set role service_role');const second=randomUUID(),s=await claim(second);assert.equal((await finish(second,s.claim)).earned,245);const third=randomUUID(),t=await claim(third);assert.equal((await finish(third,t.claim)).earned,0);
+ const partial=randomUUID(),p=await claim(partial);const grades=items.map(i=>({...i,definitionScore:.5,answerScore:1,uncertain:i.figureId===0}));const part=await finish(partial,p.claim,grades);assert.equal(part.score,14.4);assert.equal(part.earned,0);assert.equal(part.items[0].definitionScore,0);
+ const blank=randomUUID(),b=await claim(blank,u,answers.map(q=>({...q,name:'',definition:'',example:''})));assert.equal((await finish(blank,b.claim)).score,0);
+ const retry=randomUUID(),a=await claim(retry);await call('fail_written_exam($1,$2,$3)',[u,retry,a.claim]);const a2=await claim(retry);assert.notEqual(a2.claim,a.claim);await assert.rejects(()=>finish(retry,a.claim));await call('fail_written_exam($1,$2,$3)',[u,retry,a2.claim]);await assert.rejects(()=>claim(retry),/RETRY_LIMIT/);
+ await db.exec('reset role');const cost=(await db.query('select sum(charged_micro_usd) n from public.written_calls')).rows[0].n;assert.equal(Number(cost),700000);
+ await db.exec('set role service_role');await call('settle_written_call($1,$2)',[r.claim,18000]);await db.exec('reset role');assert.equal(Number((await db.query('select sum(charged_micro_usd) n from public.written_calls')).rows[0].n),618000);
+ await db.exec('update public.written_calls set charged_micro_usd=4000000');await db.exec('set role service_role');await assert.rejects(()=>claim(randomUUID(),v),/CAMPAIGN_BUDGET/);
+ await db.exec('reset role');await db.exec('update public.written_calls set charged_micro_usd=0');await db.exec('set role service_role');for(let i=0;i<3;i++)await claim(randomUUID());await assert.rejects(()=>claim(randomUUID()),/DAILY_USER_LIMIT/);
+ await db.exec('reset role');await db.exec(fn.replace('2026-09-25 00:00:00 Europe/Sofia','2000-09-25 00:00:00 Europe/Sofia'));await db.exec('set role service_role');await assert.rejects(()=>claim(randomUUID(),v),/CAMPAIGN_ENDED/);assert.equal((await claim(id)).status,'graded');
+ await db.close();console.log('PASS: private written copies, trusted grading only, idempotent XP, shared caps, partial and uncertain scores, blank override, retries, budget reservations, daily and campaign limits.');
+})().catch(e=>{console.error(e);process.exit(1)});

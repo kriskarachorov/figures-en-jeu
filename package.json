@@ -2,7 +2,7 @@
   "name": "figures-en-jeu",
   "private": true,
   "scripts": {
-    "test": "node tests/database.cjs supabase/migrations && node tests/game.cjs . && node tests/accounts.cjs . && node tests/thursday.cjs . && node tests/rank-messages.cjs supabase/migrations && node tests/rank-notice.cjs . && node tests/thursday-db.cjs supabase/migrations && node tests/live-refresh.cjs . && node tests/zero-xp-ranks.cjs supabase/migrations"
+    "test": "node tests/database.cjs supabase/migrations && node tests/game.cjs . && node tests/accounts.cjs . && node tests/thursday.cjs . && node tests/rank-messages.cjs supabase/migrations && node tests/rank-notice.cjs . && node tests/thursday-db.cjs supabase/migrations && node tests/live-refresh.cjs . && node tests/zero-xp-ranks.cjs supabase/migrations && node tests/written-ui.cjs && node tests/written-edge.cjs && node tests/written-db.cjs supabase/migrations"
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",
