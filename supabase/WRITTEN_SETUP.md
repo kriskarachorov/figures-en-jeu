@@ -1,6 +1,6 @@
 # Activer le contrôle rédigé pour jeudi
 
-Le code est prêt et testé localement. La clé OpenAI, la migration 008 et la fonction Supabase restent à installer. L’ancien site reste en ligne jusqu’à cette activation.
+Installation vérifiée le 23 septembre 2026 : migration 008 présente, fonction grade-written déployée, secrets serveur présents, demandes non connectées refusées. Les étapes ci-dessous servent de référence pour une réinstallation. Une correction réelle connectée reste à vérifier.
 
 ## 1. Activer l’API OpenAI
 
