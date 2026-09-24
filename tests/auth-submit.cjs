@@ -1,0 +1,20 @@
+const {JSDOM}=require('jsdom'),fs=require('fs'),assert=require('node:assert/strict');
+const dom=new JSDOM(fs.readFileSync('index.html','utf8'),{url:'https://example.test',runScripts:'outside-only'}),w=dom.window;
+w.HTMLDialogElement.prototype.showModal=function(){this.open=true};
+let calls=0,finish;
+w.supabase={createClient:()=>({auth:{onAuthStateChange:()=>{},signInWithPassword:()=>{calls++;return new Promise(r=>finish=r)}}})};
+w.eval(fs.readFileSync('accounts.js','utf8'));
+(async()=>{
+ w.GameAccount.openAuth();
+ const form=w.document.getElementById('auth-form');
+ const send=()=>form.dispatchEvent(new w.Event('submit',{cancelable:true}));
+ send();send();assert.equal(calls,1);
+ finish({error:{code:'over_email_send_rate_limit'}});
+ await new Promise(r=>setTimeout(r,0));
+ assert.match(w.document.getElementById('auth-message').textContent,/quota d’e-mails/);
+ send();assert.equal(calls,2);
+ finish({error:{code:'over_request_rate_limit'}});
+ await new Promise(r=>setTimeout(r,0));
+ assert.match(w.document.getElementById('auth-message').textContent,/Trop de tentatives/);
+ console.log('PASS: concurrent auth submissions blocked, retry restored, email and request quotas distinguished.');w.close();
+})().catch(e=>{console.error(e);process.exit(1)});
